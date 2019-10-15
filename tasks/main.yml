@@ -1,0 +1,18 @@
+---
+
+- block:
+      
+    - name: "Import images from tar file"
+      include_tasks: importimages.yml
+      tags: [import]
+      when : 
+        - ocp_images_push_import == "yes"
+
+    - name: "Retag and push images."
+      include_tasks: retagimages.yml
+
+  become: true
+
+
+
+

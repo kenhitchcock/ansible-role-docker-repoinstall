@@ -1,0 +1,21 @@
+---
+
+- name: "Does the import location contain the file specified?"
+  stat:
+    path: "{{rh_ocp_export_path_core}}"
+  register: core
+
+- name: Load, core OCP images from core.tar
+  shell: |
+         docker load -i "{{rh_ocp_export_path_core}}"
+  when: core.stat.exists == true
+
+- name: "Does the import location contain the file specified?"
+  stat:
+    path: "{{rh_ocp_export_path_app}}"
+  register: app
+
+- name: Load, app OCP images from app.tar
+  shell: |
+         docker load -i "{{rh_ocp_export_path_app}}"
+  when: app.stat.exists == true

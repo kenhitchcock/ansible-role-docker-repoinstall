@@ -1,0 +1,55 @@
+---
+
+- name: "Re tag core images"
+  shell: |
+         docker tag "{{rh_container_repo}}/{{item}}:{{ocp_core_fulltag}}" "{{ocp_push_internal_repo}}/{{item}}:{{ocp_core_tag}}" &&
+         docker push "{{ocp_push_internal_repo}}/{{item}}:{{ocp_core_tag}}"
+  loop: "{{core_ocp_images}}"
+  when: 
+    - ocp_images_retag_push == "yes"
+    - ocp_images_retag_core == "yes"
+
+- name: "Re tag image inspector image"
+  shell: |
+         docker tag "{{rh_container_repo}}/{{item}}:{{ocp_image_inspector_tag}}" "{{ocp_push_internal_repo}}/{{item}}:{{ocp_image_inspector_tag}}" &&
+         docker push "{{ocp_push_internal_repo}}/{{item}}:{{ocp_image_inspector_tag}}"
+  loop: "{{image_inspector_ocp_image}}"
+  when: 
+    - ocp_images_retag_push == "yes"
+    - ocp_images_retag_core == "yes"
+
+- name: "Re tag etcd images"
+  shell: |
+         docker tag "{{rh_container_repo}}/{{item}}:{{ocp_etcd_tag}}" "{{ocp_push_internal_repo}}/{{item}}:{{ocp_etcd_tag}}" &&
+         docker push "{{ocp_push_internal_repo}}/{{item}}:{{ocp_etcd_tag}}"
+  loop: "{{etcd_ocp_image}}"
+  when: 
+    - ocp_images_retag_push == "yes"
+    - ocp_images_retag_core == "yes"
+
+- name: "Re tag app images"
+  shell: |
+         docker tag "{{rh_container_repo}}/{{item}}:{{ocp_app_fulltag}}" "{{ocp_push_internal_repo}}/{{item}}:{{ocp_app_tag}}" &&
+         docker push "{{ocp_push_internal_repo}}/{{item}}:{{ocp_app_tag}}"
+  loop: "{{rh_app_images}}"
+  when: 
+    - ocp_images_retag_push == "yes"
+    - ocp_images_retag_app == "yes"
+ 
+- name: "Re tag optional images"
+  shell: |
+         docker tag "{{rh_container_repo}}/{{item}}:{{ocp_opt_fulltag}}" "{{ocp_push_internal_repo}}/{{item}}:{{ocp_opt_tag}}" &&
+         docker push "{{ocp_push_internal_repo}}/{{item}}:{{ocp_opt_tag}}"
+  loop: "{{opt_ocp_images}}"
+  when: 
+    - ocp_images_retag_push == "yes"
+    - ocp_images_retag_opt == "yes"
+
+- name: "Re tag non Red Hat images"
+  shell: |
+         docker tag "{{rh_container_repo}}/{{item}}:{{ocp_nonrh_fulltag}}" "{{ocp_push_internal_repo}}/{{item}}:{{ocp_nonrh_tag}}" &&
+         docker push "{{ocp_push_internal_repo}}/{{item}}:{{ocp_nonrh_tag}}"
+  loop: "{{  nonrh_app_images}}"
+  when: 
+    - ocp_images_retag_push == "yes"
+    - ocp_images_retag_nonrh == "yes"
