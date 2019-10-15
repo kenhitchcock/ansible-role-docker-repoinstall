@@ -6,9 +6,25 @@ docker_repo_insecure: "yes"
 
 docker_repo_sport: 5000
 docker_repo_dport: 5000
+docker_repo_secure_sport: 443
+docker_repo_secure_dport: 443
+
 docker_repo_restart_policy: always
 
 docker_repo_name: registry
 
 docker_repo_image: registry
 docker_repo_image_ver: 2
+
+# Most likely will not work as i guess you name certs what you want.
+docker_repo_tls_cert: domain.crt
+docker_repo_tls_key: domain.key
+docker_repo_cert_uploadpath: "files/"
+
+docker_repo_certs:
+  - "{{docker_repo_cert_uploadpath}}{{docker_repo_tls_cert}}"
+  - "{{docker_repo_cert_uploadpath}}{{docker_repo_tls_key}}"
+
+docker_repo_certs_location: "/certs"
+docker_repo_address: 0.0.0.0
+

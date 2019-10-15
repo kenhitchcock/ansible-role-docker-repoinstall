@@ -1,8 +1,6 @@
 ---
 
-
-
-- name: "Install Docker Repo"
+- name: "Install Insecure Docker Repo"
   shell: |
          docker run -d -p "{{docker_repo_sport}}":"{{docker_repo_dport}}" \
          --restart="{{docker_repo_restart_policy}}" \
@@ -11,3 +9,40 @@
   when: 
     - docker_repo_install == "yes"
     - docker_repo_insecure == "yes"
+
+# Will need to work on this to allow certificates to be uploaded, variables to allow cert locations ect..
+- name: "Check if certs directory exists"
+  stat: 
+    path:  "{{docker_repo_certs_location}}"
+  register: certsdir
+
+- name: "Creates directory if missing"
+  file:
+    path: "{{docker_repo_certs_location}}"
+    state: directory
+  when: 
+    - certsdir.stat.exists == false
+
+- name: "Copy Certs to destination for secure registry"
+  copy: 
+    src: "{{item}}"
+    dest: "{{docker_repo_certs_location}}"
+  loop: "{{docker_repo_certs}}"
+  when: 
+    - docker_repo_install == "yes"
+    - docker_repo_insecure == "no"
+     
+- name: "Install Secure Docker Repo"
+  shell: |
+         docker run -d \
+         --restart="{{docker_repo_restart_policy}}" \
+         --name "{{docker_repo_name}}" \
+         -v "$(pwd)"{{docker_repo_certs_location}}":"{{docker_repo_certs_location}}" \
+         -e REGISTRY_HTTP_ADDR="{{docker_repo_address}}":"{{docker_repo_secure_sport}}" \
+         -e REGISTRY_HTTP_TLS_CERTIFICATE="{{docker_repo_certs_location}}{{docker_repo_tls_cert}}" \
+         -e REGISTRY_HTTP_TLS_KEY="{{docker_repo_certs_location}}{{docker_repo_tls_key}}" \
+         -p "{{docker_repo_secure_sport}}":"{{docker_repo_secure_dport}}" \
+         "{{docker_repo_image}}":"{{docker_repo_image_ver}}"
+  when: 
+    - docker_repo_install == "yes"
+    - docker_repo_insecure == "no"
