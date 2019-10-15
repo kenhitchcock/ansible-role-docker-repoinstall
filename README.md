@@ -19,7 +19,7 @@ You can use the ansible-role-docker-install. This needs to be run before using t
 
 Example Playbook
 ----------------
-
+# Example playbook
 - name: Docker repository install
   hosts: localhost
   become: true

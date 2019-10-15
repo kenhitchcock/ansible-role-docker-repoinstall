@@ -1,0 +1,13 @@
+---
+
+
+
+- name: "Install Docker Repo"
+  shell: |
+         docker run -d -p "{{docker_repo_sport}}":"{{docker_repo_dport}}" \
+         --restart="{{docker_repo_restart_policy}}" \
+         --name "{{docker_repo_name}}" \
+         "{{docker_repo_image}}":"{{docker_repo_image_ver}}"
+  when: 
+    - docker_repo_install == "yes"
+    - docker_repo_insecure == "yes"

@@ -2,11 +2,11 @@
 
 - block:
       
-    - name: "Import images from tar file"
-      include_tasks: importimages.yml
-      tags: [import]
+    - name: "Install Docker Repo Container"
+      include_tasks: installdockerrepo.yml
+      tags: [repoinstall]
       when : 
-        - ocp_images_push_import == "yes"
+        - docker_repo_install == "yes"
 
     - name: "Retag and push images."
       include_tasks: retagimages.yml
