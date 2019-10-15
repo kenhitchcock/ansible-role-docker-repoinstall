@@ -1,4 +1,4 @@
-ansible-role-ocp-images-push
+ansible-role-docker-repoinstall
 =========
 
 Role written to create a basic docker repository.
