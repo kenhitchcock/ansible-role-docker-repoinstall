@@ -5,6 +5,7 @@
 - name: "Install Insecure Docker Repo"
   shell: |
          docker run -d -p "{{docker_repo_sport}}":"{{docker_repo_dport}}" \
+         -e REGISTRY_HTTP_ADDR="{{docker_repo_address}}":"{{docker_repo_dport}}" \
          --restart="{{docker_repo_restart_policy}}" \
          --name "{{docker_repo_name}}" \
          "{{docker_repo_image}}":"{{docker_repo_image_ver}}"
