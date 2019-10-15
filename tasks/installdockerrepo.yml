@@ -1,4 +1,6 @@
 ---
+# TODO
+# Add checking to see if container already running.
 
 - name: "Install Insecure Docker Repo"
   shell: |
@@ -6,11 +8,12 @@
          --restart="{{docker_repo_restart_policy}}" \
          --name "{{docker_repo_name}}" \
          "{{docker_repo_image}}":"{{docker_repo_image_ver}}"
+  ignore_errors: yes
   when: 
     - docker_repo_install == "yes"
     - docker_repo_insecure == "yes"
 
-# Will need to work on this to allow certificates to be uploaded, variables to allow cert locations ect..
+# Secure registry needs to be tested.
 - name: "Check if certs directory exists"
   stat: 
     path:  "{{docker_repo_certs_location}}"
@@ -43,6 +46,7 @@
          -e REGISTRY_HTTP_TLS_KEY="{{docker_repo_certs_location}}""{{docker_repo_tls_key}}" \
          -p "{{docker_repo_secure_sport}}":"{{docker_repo_secure_dport}}" \
          "{{docker_repo_image}}":"{{docker_repo_image_ver}}"
+  ignore_errors: yes
   when: 
     - docker_repo_install == "yes"
     - docker_repo_insecure == "no"
