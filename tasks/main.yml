@@ -7,10 +7,6 @@
       tags: [repoinstall]
       when : 
         - docker_repo_install == "yes"
-
-    - name: "Retag and push images."
-      include_tasks: retagimages.yml
-
   become: true
 
 

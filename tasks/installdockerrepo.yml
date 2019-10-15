@@ -37,10 +37,10 @@
          docker run -d \
          --restart="{{docker_repo_restart_policy}}" \
          --name "{{docker_repo_name}}" \
-         -v "$(pwd)"{{docker_repo_certs_location}}":"{{docker_repo_certs_location}}" \
+         -v "$(pwd)""{{docker_repo_certs_location}}":"{{docker_repo_certs_location}}" \
          -e REGISTRY_HTTP_ADDR="{{docker_repo_address}}":"{{docker_repo_secure_sport}}" \
-         -e REGISTRY_HTTP_TLS_CERTIFICATE="{{docker_repo_certs_location}}{{docker_repo_tls_cert}}" \
-         -e REGISTRY_HTTP_TLS_KEY="{{docker_repo_certs_location}}{{docker_repo_tls_key}}" \
+         -e REGISTRY_HTTP_TLS_CERTIFICATE="{{docker_repo_certs_location}}""{{docker_repo_tls_cert}}" \
+         -e REGISTRY_HTTP_TLS_KEY="{{docker_repo_certs_location}}""{{docker_repo_tls_key}}" \
          -p "{{docker_repo_secure_sport}}":"{{docker_repo_secure_dport}}" \
          "{{docker_repo_image}}":"{{docker_repo_image_ver}}"
   when: 
